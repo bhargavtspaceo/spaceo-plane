@@ -9,6 +9,7 @@ from plane.db.models import WorkspaceMember
 Owner = 20
 Admin = 15
 Member = 10
+Developer = 11
 Guest = 5
 
 

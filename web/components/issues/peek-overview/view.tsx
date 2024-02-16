@@ -23,6 +23,7 @@ import { IssueActivity } from "../issue-detail/issue-activity";
 import { CenterPanelIcon, CustomSelect, FullScreenPanelIcon, SidePanelIcon, Spinner } from "@plane/ui";
 // helpers
 import { copyUrlToClipboard } from "helpers/string.helper";
+import { EUserProjectRoles } from "constants/project";
 
 interface IIssueView {
   workspaceSlug: string;
@@ -65,7 +66,7 @@ export const IssueView: FC<IIssueView> = observer((props) => {
   const issuePeekOverviewRef = useRef<HTMLDivElement>(null);
   // store hooks
   const { setPeekIssue, isAnyModalOpen, isDeleteIssueModalOpen, toggleDeleteIssueModal } = useIssueDetail();
-  const { currentUser } = useUser();
+  const { currentUser, membership: { currentWorkspaceAllProjectsRole } } = useUser();
   const {
     issue: { getIssueById },
   } = useIssueDetail();
@@ -102,6 +103,10 @@ export const IssueView: FC<IIssueView> = observer((props) => {
 
   const handleKeyDown = () => !isAnyModalOpen && removeRoutePeekId();
   useKeypress("Escape", handleKeyDown);
+
+  // Check if issue is delete, based on user role
+  const currentProjectRole = currentWorkspaceAllProjectsRole?.[projectId];
+  const isAllowToDelete = currentProjectRole && currentProjectRole >= EUserProjectRoles.MEMBER;
 
   return (
     <>
@@ -142,9 +147,8 @@ export const IssueView: FC<IIssueView> = observer((props) => {
           >
             {/* header */}
             <div
-              className={`relative flex items-center justify-between p-4 ${
-                currentMode?.key === "full-screen" ? "border-b border-custom-border-200" : ""
-              }`}
+              className={`relative flex items-center justify-between p-4 ${currentMode?.key === "full-screen" ? "border-b border-custom-border-200" : ""
+                }`}
             >
               <div className="flex items-center gap-4">
                 <button onClick={removeRoutePeekId}>
@@ -168,11 +172,10 @@ export const IssueView: FC<IIssueView> = observer((props) => {
                       {PEEK_OPTIONS.map((mode) => (
                         <CustomSelect.Option key={mode.key} value={mode.key}>
                           <div
-                            className={`flex items-center gap-1.5 ${
-                              currentMode.key === mode.key
-                                ? "text-custom-text-200"
-                                : "text-custom-text-400 hover:text-custom-text-200"
-                            }`}
+                            className={`flex items-center gap-1.5 ${currentMode.key === mode.key
+                              ? "text-custom-text-200"
+                              : "text-custom-text-400 hover:text-custom-text-200"
+                              }`}
                           >
                             <mode.icon className="-my-1 h-4 w-4 flex-shrink-0" />
                             {mode.title}
@@ -192,7 +195,7 @@ export const IssueView: FC<IIssueView> = observer((props) => {
                   <button onClick={handleCopyText}>
                     <Link2 className="h-4 w-4 -rotate-45 text-custom-text-300 hover:text-custom-text-200" />
                   </button>
-                  {!disabled && (
+                  {isAllowToDelete && (
                     <button onClick={() => toggleDeleteIssueModal(true)}>
                       <Trash2 className="h-4 w-4 text-custom-text-300 hover:text-custom-text-200" />
                     </button>
@@ -258,9 +261,8 @@ export const IssueView: FC<IIssueView> = observer((props) => {
                           </div>
                         </div>
                         <div
-                          className={`h-full !w-[400px] flex-shrink-0 border-l border-custom-border-200 p-4 py-5 ${
-                            is_archived ? "pointer-events-none" : ""
-                          }`}
+                          className={`h-full !w-[400px] flex-shrink-0 border-l border-custom-border-200 p-4 py-5 ${is_archived ? "pointer-events-none" : ""
+                            }`}
                         >
                           <PeekOverviewProperties
                             workspaceSlug={workspaceSlug}

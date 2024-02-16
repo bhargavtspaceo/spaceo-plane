@@ -8,6 +8,7 @@ from plane.db.models import WorkspaceMember, ProjectMember
 Admin = 20
 Member = 15
 Viewer = 10
+Developer = 11
 Guest = 5
 
 
@@ -45,6 +46,7 @@ class ProjectBasePermission(BasePermission):
 
 class ProjectMemberPermission(BasePermission):
     def has_permission(self, request, view):
+        
         if request.user.is_anonymous:
             return False
 
@@ -55,20 +57,21 @@ class ProjectMemberPermission(BasePermission):
                 member=request.user,
                 is_active=True,
             ).exists()
+        
         ## Only workspace owners or admins can create the projects
         if request.method == "POST":
             return WorkspaceMember.objects.filter(
                 workspace__slug=view.workspace_slug,
                 member=request.user,
-                role__in=[Admin, Member],
+                role__in=[Admin, Member, Developer],
                 is_active=True,
             ).exists()
-
+        
         ## Only Project Admins can update project attributes
         return ProjectMember.objects.filter(
             workspace__slug=view.workspace_slug,
             member=request.user,
-            role__in=[Admin, Member],
+            role__in=[Admin, Member, Developer],
             project_id=view.project_id,
             is_active=True,
         ).exists()
@@ -92,7 +95,7 @@ class ProjectEntityPermission(BasePermission):
         return ProjectMember.objects.filter(
             workspace__slug=view.workspace_slug,
             member=request.user,
-            role__in=[Admin, Member],
+            role__in=[Admin, Member, Developer],
             project_id=view.project_id,
             is_active=True,
         ).exists()

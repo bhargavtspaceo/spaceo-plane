@@ -108,11 +108,9 @@ export const AllIssueLayoutRoot: React.FC = observer(() => {
 
   const canEditProperties = useCallback(
     (projectId: string | undefined) => {
-      if (!projectId) return false;
-
-      const currentProjectRole = currentWorkspaceAllProjectsRole && currentWorkspaceAllProjectsRole[projectId];
-
-      return !!currentProjectRole && currentProjectRole >= EUserProjectRoles.MEMBER;
+      if (!projectId) return false;      
+      const currentProjectRole = currentWorkspaceAllProjectsRole && currentWorkspaceAllProjectsRole[projectId];      
+      return !!currentProjectRole && currentProjectRole >= EUserProjectRoles.DEVELOPER;
     },
     [currentWorkspaceAllProjectsRole]
   );
@@ -170,12 +168,13 @@ export const AllIssueLayoutRoot: React.FC = observer(() => {
         handleUpdate={async () => handleIssues({ ...issue }, EIssueActions.UPDATE)}
         handleDelete={async () => handleIssues(issue, EIssueActions.DELETE)}
         portalElement={portalElement}
+        currentUserRole={currentWorkspaceAllProjectsRole && currentWorkspaceAllProjectsRole[issue.project_id]}
       />
     ),
     [handleIssues]
   );
 
-  const isEditingAllowed = !!currentWorkspaceRole && currentWorkspaceRole >= EUserWorkspaceRoles.MEMBER;
+  const isEditingAllowed = !!currentWorkspaceRole && currentWorkspaceRole >= EUserWorkspaceRoles.DEVELOPER;
 
   if (loader === "init-loader" || !globalViewId || globalViewId !== dataViewId || !issueIds) {
     return <SpreadsheetLayoutLoader />;

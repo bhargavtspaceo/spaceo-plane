@@ -44,7 +44,7 @@ export const CycleIssueQuickActions: React.FC<IQuickActionProps> = (props) => {
     membership: { currentProjectRole },
   } = useUser();
 
-  const isEditingAllowed = !!currentProjectRole && currentProjectRole >= EUserProjectRoles.MEMBER;
+  const isEditingAllowed = !!currentProjectRole && currentProjectRole >= EUserProjectRoles.DEVELOPER;
 
   const activeLayout = `${issuesFilter.issueFilters?.displayFilters?.layout} layout`;
 

@@ -36,6 +36,8 @@ services:
   plane-db:
     image: postgres:15.2-alpine
     restart: unless-stopped
+    ports:
+      - 5432:5432
     networks:
       - dev_env
     command: postgres -c 'max_connections=1000'

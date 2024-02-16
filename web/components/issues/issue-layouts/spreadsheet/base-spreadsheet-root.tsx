@@ -51,7 +51,7 @@ export const BaseSpreadsheetRoot = observer((props: IBaseSpreadsheetRoot) => {
   // derived values
   const { enableInlineEditing, enableQuickAdd, enableIssueCreation } = issueStore?.viewFlags || {};
   // user role validation
-  const isEditingAllowed = !!currentProjectRole && currentProjectRole >= EUserProjectRoles.MEMBER;
+  const isEditingAllowed = !!currentProjectRole && currentProjectRole >= EUserProjectRoles.DEVELOPER;
 
   const canEditProperties = useCallback(
     (projectId: string | undefined) => {
@@ -104,7 +104,7 @@ export const BaseSpreadsheetRoot = observer((props: IBaseSpreadsheetRoot) => {
           issueActions[EIssueActions.REMOVE] ? async () => handleIssues(issue, EIssueActions.REMOVE) : undefined
         }
         portalElement={portalElement}
-        readOnly={!isEditingAllowed || isCompletedCycle}
+        readOnly={isCompletedCycle}
       />
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps

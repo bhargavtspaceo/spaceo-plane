@@ -106,7 +106,7 @@ export const ProjectIssuesHeader: React.FC = observer(() => {
 
   const deployUrl = process.env.NEXT_PUBLIC_DEPLOY_URL;
   const canUserCreateIssue =
-    currentProjectRole && [EUserProjectRoles.ADMIN, EUserProjectRoles.MEMBER].includes(currentProjectRole);
+    currentProjectRole && [EUserProjectRoles.ADMIN, EUserProjectRoles.MEMBER, EUserProjectRoles.DEVELOPER].includes(currentProjectRole);
 
   return (
     <>
@@ -218,9 +218,12 @@ export const ProjectIssuesHeader: React.FC = observer(() => {
           )}
           {canUserCreateIssue && (
             <>
-              <Button className="hidden md:block" onClick={() => setAnalyticsModal(true)} variant="neutral-primary" size="sm">
-                Analytics
-              </Button>
+              {/* Only Members and Admin can see the analytics */}
+              {currentProjectRole && [EUserProjectRoles.ADMIN, EUserProjectRoles.MEMBER].includes(currentProjectRole) && (
+                <Button className="hidden md:block" onClick={() => setAnalyticsModal(true)} variant="neutral-primary" size="sm">
+                  Analytics
+                </Button>
+              )}
               <Button
                 onClick={() => {
                   setTrackElement("Project issues page");

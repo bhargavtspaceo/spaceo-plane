@@ -14,9 +14,10 @@ import { TIssue } from "@plane/types";
 import { IQuickActionProps } from "../list/list-view-types";
 // constants
 import { EIssuesStoreType } from "constants/issue";
+import { EUserWorkspaceRoles } from "constants/workspace";
 
 export const AllIssueQuickActions: React.FC<IQuickActionProps> = (props) => {
-  const { issue, handleDelete, handleUpdate, customActionButton, portalElement, readOnly = false } = props;
+  const { issue, handleDelete, handleUpdate, customActionButton, portalElement, readOnly = false, currentUserRole } = props;
   // states
   const [createUpdateIssueModal, setCreateUpdateIssueModal] = useState(false);
   const [issueToEdit, setIssueToEdit] = useState<TIssue | undefined>(undefined);
@@ -87,7 +88,7 @@ export const AllIssueQuickActions: React.FC<IQuickActionProps> = (props) => {
             <CustomMenu.MenuItem
               onClick={() => {
                 setTrackElement("Global issues");
-            setIssueToEdit(issue);
+                setIssueToEdit(issue);
                 setCreateUpdateIssueModal(true);
               }}
             >
@@ -99,7 +100,7 @@ export const AllIssueQuickActions: React.FC<IQuickActionProps> = (props) => {
             <CustomMenu.MenuItem
               onClick={() => {
                 setTrackElement("Global issues");
-            setCreateUpdateIssueModal(true);
+                setCreateUpdateIssueModal(true);
               }}
             >
               <div className="flex items-center gap-2">
@@ -107,17 +108,19 @@ export const AllIssueQuickActions: React.FC<IQuickActionProps> = (props) => {
                 Make a copy
               </div>
             </CustomMenu.MenuItem>
-            <CustomMenu.MenuItem
-              onClick={() => {
-                setTrackElement("Global issues");
-            setDeleteIssueModal(true);
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Trash2 className="h-3 w-3" />
-                Delete issue
-              </div>
-            </CustomMenu.MenuItem>
+            {currentUserRole && currentUserRole >= EUserWorkspaceRoles.MEMBER && (
+              <CustomMenu.MenuItem
+                onClick={() => {
+                  setTrackElement("Global issues");
+                  setDeleteIssueModal(true);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Trash2 className="h-3 w-3" />
+                  Delete issue
+                </div>
+              </CustomMenu.MenuItem>
+            )}
           </>
         )}
       </CustomMenu>

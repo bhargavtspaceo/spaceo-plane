@@ -9,6 +9,7 @@ export enum EUserProjectRoles {
   VIEWER = 10,
   MEMBER = 15,
   ADMIN = 20,
+  DEVELOPER = 11
 }
 
 export const NETWORK_CHOICES: { key: 0 | 2; label: string; icon: LucideIcon }[] = [
@@ -88,7 +89,7 @@ export const PROJECT_SETTINGS_LINKS: {
     key: "general",
     label: "General",
     href: `/settings`,
-    access: EUserProjectRoles.MEMBER,
+    access: EUserProjectRoles.MEMBER, 
     highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/settings`,
     Icon: SettingIcon,
   },
@@ -96,7 +97,7 @@ export const PROJECT_SETTINGS_LINKS: {
     key: "members",
     label: "Members",
     href: `/settings/members`,
-    access: EUserProjectRoles.MEMBER,
+    access: EUserProjectRoles.DEVELOPER,
     highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/settings/members`,
     Icon: SettingIcon,
   },

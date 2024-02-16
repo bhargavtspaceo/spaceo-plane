@@ -6,4 +6,5 @@ export interface IQuickActionProps {
   customActionButton?: React.ReactElement;
   portalElement?: HTMLDivElement | null;
   readOnly?: boolean;
+  currentUserRole?:number
 }

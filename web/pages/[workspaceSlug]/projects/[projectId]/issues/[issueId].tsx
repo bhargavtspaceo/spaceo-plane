@@ -35,7 +35,7 @@ const IssueDetailsPage: NextPageWithLayout = observer(() => {
   const issue = getIssueById(issueId?.toString() || "") || undefined;
   const issueLoader = !issue || isLoading ? true : false;
 
-  useEffect(() => {
+  useEffect(() => {    
     const handleToggleIssueDetailSidebar = () => {
       if (window && window.innerWidth < 768) {
         themeStore.toggleIssueDetailSidebar(true);

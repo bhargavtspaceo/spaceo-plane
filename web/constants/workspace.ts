@@ -15,12 +15,14 @@ export enum EUserWorkspaceRoles {
   VIEWER = 10,
   MEMBER = 15,
   ADMIN = 20,
+  DEVELOPER = 11
 }
 
 export const ROLE = {
   5: "Guest",
   10: "Viewer",
-  15: "Member",
+  11: "Developer",
+  15: "Project Manager",
   20: "Admin",
 };
 

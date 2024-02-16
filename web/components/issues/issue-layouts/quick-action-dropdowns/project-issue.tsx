@@ -34,7 +34,7 @@ export const ProjectIssueQuickActions: React.FC<IQuickActionProps> = (props) => 
 
   const activeLayout = `${issuesFilter.issueFilters?.displayFilters?.layout} layout`;
 
-  const isEditingAllowed = !!currentProjectRole && currentProjectRole >= EUserProjectRoles.MEMBER;
+  const isEditingAllowed = !!currentProjectRole && currentProjectRole >= EUserProjectRoles.DEVELOPER;
 
   const { setToastAlert } = useToast();
 
@@ -96,7 +96,7 @@ export const ProjectIssueQuickActions: React.FC<IQuickActionProps> = (props) => 
             Copy link
           </div>
         </CustomMenu.MenuItem>
-        {isEditingAllowed && !readOnly && (
+        {isEditingAllowed && readOnly && (
           <>
             <CustomMenu.MenuItem
               onClick={() => {
@@ -121,6 +121,7 @@ export const ProjectIssueQuickActions: React.FC<IQuickActionProps> = (props) => 
                 Make a copy
               </div>
             </CustomMenu.MenuItem>
+            {currentProjectRole && currentProjectRole >= EUserProjectRoles.MEMBER && (
             <CustomMenu.MenuItem
               onClick={() => {
                 setTrackElement(activeLayout);
@@ -132,6 +133,7 @@ export const ProjectIssueQuickActions: React.FC<IQuickActionProps> = (props) => 
                 Delete issue
               </div>
             </CustomMenu.MenuItem>
+            )}
           </>
         )}
       </CustomMenu>

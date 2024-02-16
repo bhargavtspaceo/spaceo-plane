@@ -29,13 +29,13 @@ type Props = {
 };
 
 const USE_CASES = [
+  "Bug Tracking",
   "Build Products",
+  "Test Case Management",
+  "Code Repository Integration",
   "Manage Feedbacks",
   "Service delivery",
   "Field force management",
-  "Code Repository Integration",
-  "Bug Tracking",
-  "Test Case Management",
   "Resource allocation",
 ];
 
